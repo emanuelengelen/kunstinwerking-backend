@@ -1,7 +1,8 @@
 import asyncio
 import websockets
 
-async def hello(websocket):
+
+async def controller(websocket, path):
     while True:
         try:
             structure_description = await websocket.recv()
@@ -10,12 +11,12 @@ async def hello(websocket):
             break
 
         print(f"< {structure_description}")
-        structure_nodes = f"{structure_description}$"
+        structure_nodes = f"{structure_description}"
 
         await websocket.send(structure_nodes)
         print(f"> {structure_nodes}")
 
-start_server = websockets.serve(hello, "localhost", 3001)
+start_server = websockets.serve(controller, "localhost", 3001)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
